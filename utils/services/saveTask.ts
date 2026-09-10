@@ -3,10 +3,9 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
-
 export async function saveTask(formData: FormData): Promise<void> {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient();
 
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
@@ -22,6 +21,13 @@ export async function saveTask(formData: FormData): Promise<void> {
     priority,
   });
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    throw new Error("You must be logged in to create a task.");
+  }
+
   const { data, error } = await supabase
     .from("tasks")
     .insert({
@@ -30,6 +36,7 @@ export async function saveTask(formData: FormData): Promise<void> {
       due_date: dueDate,
       status: status,
       priority: priority,
+      user_id: user.id,
     })
     .select();
 

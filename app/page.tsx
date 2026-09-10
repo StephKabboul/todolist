@@ -4,11 +4,9 @@ import TaskCard from "./components/TaskCard/taskCard";
 import { getTaskDetails } from "@/utils/services/getTaskDetails";
 
 import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
 
 export default async function Home() {
-  const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase =await createClient();
 
   const { data, error } = await supabase
     .from("tasks")

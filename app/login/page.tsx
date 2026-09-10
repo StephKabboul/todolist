@@ -1,6 +1,5 @@
 
 import { login } from "@/utils/services/login";
-import { signup } from "@/utils/services/login";
 
 export default function LoginPage() {
   return (

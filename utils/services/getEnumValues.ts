@@ -3,7 +3,7 @@ import {cookies} from "next/headers";
 
 export async function getEnumValues(enumName: string) {
     const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = await createClient()
     const {data, error} = await supabase.rpc("get_enum_values", {enum_type_name: enumName});
     //rpc remote procedure call ^
   
