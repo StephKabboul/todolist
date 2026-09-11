@@ -56,7 +56,6 @@ import {Dispatch, SetStateAction} from "react";
       </select>
 
 
-      //Maximum due date filter
       <input
         type="date"
         name="due_date"

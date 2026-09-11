@@ -24,7 +24,7 @@ export function filterTasks(tasks: any[], filters: TaskFilters) {
     // Filter by maximum due date
     const dueDateMatch =
       filters.due_date === "" ||
-      (task.due_date && task.due_date <= filters.due_date);
+      (task.due_date && task.due_date === filters.due_date);
 
     return searchMatch && statusMatch && priorityMatch && dueDateMatch;
   });
