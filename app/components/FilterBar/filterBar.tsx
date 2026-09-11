@@ -1,37 +1,31 @@
-// import React from "react";
+"use client"
 
-// const FilterBar = () => {
-//   return (
-//     <div className="mb-6 bg-gray-200 rounded-xl">
-//       <input 
-//       type="text"
-//       placeholder="Search tasks..."
-//       className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-//       ></input>
-      
-//       <select name="status" defaultValue="">
-//         <option></option>
-//       </select>
-//     </div>
-//   );
-// };
+import {TaskFilters} from "@/utils/renders/filterTasks";
+import {Dispatch, SetStateAction} from "react";
 
-// export default FilterBar;
+  type FilterBarProps = {
+    filters: TaskFilters;
+    setFilters: Dispatch<SetStateAction<TaskFilters>>;
+    statuses: string[];
+    priorities: string[];
+  };
 
-import { getEnumValues } from "@/utils/services/getEnumValues";
+  const FilterBar = ({ filters, setFilters, statuses, priorities }: FilterBarProps) => {
+    type FilterBarProps = {
+      filters: TaskFilters;
+      setFilters: Dispatch<SetStateAction<TaskFilters>>;
+      statuses: string[];
+      priorities: string[];
+    };
 
-const FilterBar = async () => {
-  const statuses = await getEnumValues("status");
-  const priorities = await getEnumValues("priority");
-
-  return (
-    <div className="mb-6 rounded-xl bg-gray-200 p-4">
-      <input
-        type="text"
-        placeholder="Search tasks..."
-        className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+    return (
+      <div className="mb-6 rounded-xl bg-gray-200 p-4">
+        <input
+          type="text"
+          placeholder="Search tasks..."
+          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+      onChange={(e) => setFilters({ ...filters, search: e.target.value })}
       />
-
       <select
         name="status"
         defaultValue=""
@@ -50,7 +44,8 @@ const FilterBar = async () => {
         name="priority"
         defaultValue=""
         className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-      >
+        onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
+     >
         <option value="">All priorities</option>
 
         {priorities.map((priority: string) => (
@@ -60,10 +55,13 @@ const FilterBar = async () => {
         ))}
       </select>
 
+
+      //Maximum due date filter
       <input
         type="date"
         name="due_date"
         className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+      onChange={(e) => setFilters({ ...filters, due_date: e.target.value })}
       />
     </div>
   );
