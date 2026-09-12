@@ -1,6 +1,6 @@
 import React from "react";
-import { getTaskDetails } from "@/utils/services/getTaskDetails";
 import ButtonArea from "../ButtonArea/buttonArea";
+
 type Task = {
   id: number;
   created_at: string;
@@ -13,16 +13,17 @@ type Task = {
 
 type TaskCardProps = {
   task: Task;
+  onEdit: (task: Task) => void;
 };
 
-const TaskCard = ({ task }: TaskCardProps) => {
+const TaskCard = ({ task, onEdit }: TaskCardProps) => {
   return (
-    <div className="rounded-xl border-gray-400 bg-gray-300 p-6 mb-6">
+    <div className="rounded-xl border-gray-400 bg-gray-300 p-4 mb-4">
       <div className="flex space-between">
         <h2 className="text-lg font-bold underline decoration-2">
           {task.title}
         </h2>
-        <ButtonArea task={task}></ButtonArea>
+        <ButtonArea task={task} onEdit={onEdit}></ButtonArea>
       </div>
 
       <p className="w-fit h-10 text-gray-600">{task.description}</p>

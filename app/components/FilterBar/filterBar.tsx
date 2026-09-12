@@ -1,35 +1,54 @@
-"use client"
+"use client";
 
-import {TaskFilters} from "@/utils/renders/filterTasks";
-import {Dispatch, SetStateAction} from "react";
+import { Dispatch, SetStateAction } from "react";
 
-  type FilterBarProps = {
-    filters: TaskFilters;
-    setFilters: Dispatch<SetStateAction<TaskFilters>>;
-    statuses: string[];
-    priorities: string[];
-  };
+type TaskFilters = {
+  search: string;
+  status: string;
+  priority: string;
+  due_date: string;
+};
 
-  const FilterBar = ({ filters, setFilters, statuses, priorities }: FilterBarProps) => {
-    type FilterBarProps = {
-      filters: TaskFilters;
-      setFilters: Dispatch<SetStateAction<TaskFilters>>;
-      statuses: string[];
-      priorities: string[];
-    };
+type FilterBarProps = {
+  filters: TaskFilters;
+  setFilters: Dispatch<SetStateAction<TaskFilters>>;
+  statuses: string[];
+  priorities: string[];
+};
 
-    return (
-      <div className="mb-6 rounded-xl bg-gray-200 p-4">
-        <input
-          type="text"
-          placeholder="Search tasks..."
-          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-      onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+const FilterBar = ({
+  filters,
+  setFilters,
+  statuses,
+  priorities,
+}: FilterBarProps) => {
+  return (
+    <div className="grid grid-cols-4 mb-6 rounded-xl bg-gray-200 p-4">
+      {/* Search */}
+      <input
+        type="text"
+        placeholder="Search tasks..."
+        value={filters.search}
+        className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+        onChange={(e) =>
+          setFilters({
+            ...filters,
+            search: e.target.value,
+          })
+        }
       />
+
+      {/* Status */}
       <select
         name="status"
-        defaultValue=""
+        value={filters.status}
         className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+        onChange={(e) =>
+          setFilters({
+            ...filters,
+            status: e.target.value,
+          })
+        }
       >
         <option value="">All statuses</option>
 
@@ -40,12 +59,18 @@ import {Dispatch, SetStateAction} from "react";
         ))}
       </select>
 
+      {/* Priority */}
       <select
         name="priority"
-        defaultValue=""
+        value={filters.priority}
         className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-        onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
-     >
+        onChange={(e) =>
+          setFilters({
+            ...filters,
+            priority: e.target.value,
+          })
+        }
+      >
         <option value="">All priorities</option>
 
         {priorities.map((priority: string) => (
@@ -55,12 +80,18 @@ import {Dispatch, SetStateAction} from "react";
         ))}
       </select>
 
-
+      {/* Due Date */}
       <input
         type="date"
         name="due_date"
+        value={filters.due_date}
         className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-      onChange={(e) => setFilters({ ...filters, due_date: e.target.value })}
+        onChange={(e) =>
+          setFilters({
+            ...filters,
+            due_date: e.target.value,
+          })
+        }
       />
     </div>
   );
