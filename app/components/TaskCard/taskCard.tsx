@@ -14,26 +14,28 @@ type Task = {
 type TaskCardProps = {
   task: Task;
   onEdit: (task: Task) => void;
+  onTaskChanged?: () => Promise<void>;
+
 };
 
-const TaskCard = ({ task, onEdit }: TaskCardProps) => {
+const TaskCard = ({ task, onEdit, onTaskChanged }: TaskCardProps) => {
   return (
     <div className="rounded-xl border-gray-400 bg-gray-300 p-4 mb-4">
-      <div className="flex space-between">
-        <h2 className="text-lg font-bold underline decoration-2">
+      <div className="flex justify-between">
+        <h2 className="text-lg font-bold underline decoration-2 truncate min-w-0 flex-1">
           {task.title}
         </h2>
-        <ButtonArea task={task} onEdit={onEdit}></ButtonArea>
+        <ButtonArea task={task} onEdit={onEdit} onTaskChanged={onTaskChanged}></ButtonArea>
       </div>
 
-      <p className="w-fit h-10 text-gray-600">{task.description}</p>
-      <h3 className="text-sm text-gray-300 bg-blue-400 rounded mt-4">
+      <p className=" h-13 text-gray-600 line-clamp-2">{task.description}</p>
+      <h3 className="text-sm text-gray-300 bg-blue-400 rounded mt-4 pl-1.5 pr-1.5">
         Status: {task.status}
       </h3>
-      <h3 className="text-sm text-gray-300 bg-red-400 rounded mt-4">
+      <h3 className="text-sm text-gray-300 bg-red-400 rounded mt-4 pl-1.5 pr-1.5">
         Priority: {task.priority}
       </h3>
-      <p className="text-sm text-gray-300 bg-gray-400 rounded mt-4">
+      <p className="text-sm text-gray-300 bg-gray-400 rounded mt-4 pl-1.5 pr-1.5">
         Due: {task.due_date}
       </p>
     </div>

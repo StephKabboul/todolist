@@ -32,14 +32,15 @@ type Task = {
 type ButtonAreaProps = {
   task: Task;
   onEdit: (task: Task) => void;
+   onTaskChanged?: () => Promise<void>;
 };
 
-const ButtonArea = ({ task, onEdit }: ButtonAreaProps) => {
+const ButtonArea = ({ task, onEdit, onTaskChanged }: ButtonAreaProps) => {
   return (
     <div className="max-w-2xl mx-auto flex gap-2">
       <UpdateButton task={task} onEdit={onEdit} />
 
-      <DeleteButton taskId={task.id} />
+      <DeleteButton taskId={task.id} onTaskChanged={onTaskChanged} />
     </div>
   );
 };

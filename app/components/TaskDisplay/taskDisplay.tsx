@@ -12,14 +12,20 @@ type Task = {
 
 type TaskDisplayProps = {
   tasks: Task[];
-  onEdit:(task: Task) => void
+  onEdit: (task: Task) => void;
+  onTaskChanged?: () => Promise<void>;
 };
 
-const TaskDisplay = ({ tasks, onEdit }: TaskDisplayProps) => {
+const TaskDisplay = ({ tasks, onEdit, onTaskChanged }: TaskDisplayProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} onEdit={onEdit}/>
+        <TaskCard
+          key={task.id}
+          task={task}
+          onEdit={onEdit}
+          onTaskChanged={onTaskChanged}
+        />
       ))}{" "}
     </div>
   );

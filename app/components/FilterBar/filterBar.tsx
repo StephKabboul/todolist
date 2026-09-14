@@ -23,7 +23,7 @@ const FilterBar = ({
   priorities,
 }: FilterBarProps) => {
   return (
-    <div className="grid grid-cols-4 mb-6 rounded-xl bg-gray-200 p-4">
+    <div className="grid grid-cols-4 mb-6 rounded-xl bg-gray-200 p-4 gap-2">
       {/* Search */}
       <input
         type="text"

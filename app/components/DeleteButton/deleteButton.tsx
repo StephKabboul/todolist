@@ -6,10 +6,11 @@ import { useRouter } from "next/navigation";
 
 interface DeleteButtonProps {
   taskId: number; // The error fix from earlier
+   onTaskChanged?: () => Promise<void>;
 }
 
 
-export default function DeleteButton({ taskId }: DeleteButtonProps) {
+export default function DeleteButton({ taskId, onTaskChanged}: DeleteButtonProps) {
   const router = useRouter()
   
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +22,9 @@ export default function DeleteButton({ taskId }: DeleteButtonProps) {
 
     if (result.success){
         alert("Task deleted successfully")
-        router.refresh()
+        if (onTaskChanged) {
+    await onTaskChanged();
+  }
     }else{
         alert(`Failed to delete: ${result.error}`)
     }
@@ -36,8 +39,8 @@ export default function DeleteButton({ taskId }: DeleteButtonProps) {
         <Image
           src="/trash-bin.png" // Image placed inside the public/ folder
           alt="delete button"
-          width={24}
-          height={24}
+          width={18}
+          height={18}
         />
       </button>
 

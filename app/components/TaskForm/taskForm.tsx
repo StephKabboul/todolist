@@ -21,6 +21,7 @@ type TaskFormProps = {
   priorities: string[];
   task?: Task | null;
   onCancelEdit?: () => void;
+  onTaskChanged?: () => Promise<void>;
 };
 
 const TaskForm = ({
@@ -28,6 +29,7 @@ const TaskForm = ({
   priorities,
   task,
   onCancelEdit,
+  onTaskChanged,
 }: TaskFormProps) => {
   const router = useRouter();
 
@@ -72,7 +74,7 @@ const TaskForm = ({
         description,
         dueDate,
         status,
-        priority
+        priority,
       );
 
       if (result.success) {
@@ -80,11 +82,12 @@ const TaskForm = ({
 
         clearForm();
 
+        if (onTaskChanged) {
+          await onTaskChanged();
+        }
         if (onCancelEdit) {
           onCancelEdit();
         }
-
-        router.refresh();
       } else {
         alert(`Failed to update task: ${result.error}`);
       }
@@ -103,7 +106,10 @@ const TaskForm = ({
       await saveTask(formData);
 
       clearForm();
-      router.refresh();
+      if (onTaskChanged) {
+        await onTaskChanged();
+      }
+
     }
 
     setIsSubmitting(false);
