@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import FilterBar from "../FilterBar/filterBar";
 import TaskDisplay from "../TaskDisplay/taskDisplay";
 import TaskForm from "../TaskForm/taskForm";
+import EditTaskModal from "../EditTaskModal/editTaskModal";
 import { filterTasksAction } from "@/utils/services/filterTasksAction";
+import LogoutButton from "../LogoutButton/logoutButton";
 
 type Task = {
   id: number;
@@ -39,6 +41,9 @@ const TaskArea = ({ tasks, statuses, priorities }: TaskAreaProps) => {
 
   const [displayedTasks, setDisplayedTasks] = useState<Task[]>(tasks);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [highlightedTaskId, setHighlightedTaskId] = useState<number | null>(
+    null,
+  );
 
   const loadFilteredTasks = async () => {
     const result = await filterTasksAction(filters);
@@ -59,30 +64,49 @@ const TaskArea = ({ tasks, statuses, priorities }: TaskAreaProps) => {
 
   return (
     <div className="flex flex-row m-10">
-    
       <div id="addTaskContainer" className="">
-        
         <TaskForm
           statuses={statuses}
           priorities={priorities}
-          task={selectedTask}
-          onCancelEdit={handleCancelEdit}
           onTaskChanged={loadFilteredTasks}
         />
       </div>
       <div id="taskDisplay" className="flex flex-col ml-10 w-full">
-        
+        <div className="mb-3 flex justify-end">
+          <LogoutButton></LogoutButton>
+        </div>
         <FilterBar
           filters={filters}
           setFilters={setFilters}
           statuses={statuses}
           priorities={priorities}
-        />{" "}
+        />
         <TaskDisplay
           tasks={displayedTasks}
           onEdit={handleEdit}
           onTaskChanged={loadFilteredTasks}
+          highlightedTaskId={highlightedTaskId}
         />
+
+        {selectedTask && (
+          <EditTaskModal
+            task={selectedTask}
+            statuses={statuses}
+            priorities={priorities}
+            onClose={() => setSelectedTask(null)}
+            onTaskChanged={loadFilteredTasks}
+            //animation
+            onUpdated={(taskId) => {
+              console.log("TaskArea received id:", taskId);
+
+              setHighlightedTaskId(taskId);
+
+              setTimeout(() => {
+                setHighlightedTaskId(null);
+              }, 1200);
+            }}
+          />
+        )}
       </div>
     </div>
   );

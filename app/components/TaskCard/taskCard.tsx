@@ -15,12 +15,16 @@ type TaskCardProps = {
   task: Task;
   onEdit: (task: Task) => void;
   onTaskChanged?: () => Promise<void>;
-
+isHighlighted: boolean;
 };
 
-const TaskCard = ({ task, onEdit, onTaskChanged }: TaskCardProps) => {
+const TaskCard = ({ task, onEdit, onTaskChanged, isHighlighted }: TaskCardProps) => {
+
   return (
-    <div className="rounded-xl border-gray-400 bg-gray-300 p-4 mb-4">
+    <div className={`rounded-xl border-gray-400 bg-gray-300 p-4 mb-4 transition-all duration-300 ${
+    isHighlighted ? "ring-4 ring-blue-300 animate-pulse"
+      : ""
+  }`}>
       <div className="flex justify-between">
         <h2 className="text-lg font-bold underline decoration-2 truncate min-w-0 flex-1">
           {task.title}

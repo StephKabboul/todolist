@@ -21,7 +21,6 @@ export default function DeleteButton({ taskId, onTaskChanged}: DeleteButtonProps
     const result = await DeleteCard(taskId);
 
     if (result.success){
-        alert("Task deleted successfully")
         if (onTaskChanged) {
     await onTaskChanged();
   }

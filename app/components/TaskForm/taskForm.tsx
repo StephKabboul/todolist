@@ -78,7 +78,6 @@ const TaskForm = ({
       );
 
       if (result.success) {
-        alert("Task updated successfully");
 
         clearForm();
 

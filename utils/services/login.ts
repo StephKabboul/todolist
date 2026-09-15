@@ -4,6 +4,10 @@ import { revalidatePath } from "next/cache"
 import {redirect} from "next/navigation"
 import { createClient } from "@/utils/supabase/server"
 
+type LoginResult = {
+  error: string;
+};
+
 export async function login(formData: FormData) {
     const supabase = await createClient()
 
@@ -16,9 +20,9 @@ export async function login(formData: FormData) {
     })
     
     if (error) {
-        console.error('Login error:', error.message)
-        
-        redirect(`/login?error=${encodeURIComponent(error.message)}`)
+return {
+      error: "Incorrect email or password.",
+    };        
     }
 
     revalidatePath('/', 'layout')
