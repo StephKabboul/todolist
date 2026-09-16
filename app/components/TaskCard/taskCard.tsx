@@ -21,7 +21,7 @@ isHighlighted: boolean;
 const TaskCard = ({ task, onEdit, onTaskChanged, isHighlighted }: TaskCardProps) => {
 
   return (
-    <div className={`rounded-xl border-gray-400 bg-gray-300 p-4 mb-4 transition-all duration-300 ${
+    <div id={`task-${task.id}`} className={`rounded-xl border-gray-400 bg-gray-300 p-4 mb-4 transition-all duration-300 ${
     isHighlighted ? "ring-4 ring-blue-300 animate-pulse"
       : ""
   }`}>

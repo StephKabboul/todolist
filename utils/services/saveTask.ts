@@ -94,5 +94,7 @@ export async function saveTask(formData: FormData) {
 
   return {
     success: true,
+      taskId: data[0].id, //supabase row id
+
   };
 }

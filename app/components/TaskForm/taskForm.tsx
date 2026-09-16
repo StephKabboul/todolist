@@ -22,6 +22,7 @@ type TaskFormProps = {
   task?: Task | null;
   onCancelEdit?: () => void;
   onTaskChanged?: () => Promise<void>;
+  onTaskAdded?: (taskId: number) => void;
 };
 
 const TaskForm = ({
@@ -30,6 +31,7 @@ const TaskForm = ({
   task,
   onCancelEdit,
   onTaskChanged,
+  onTaskAdded,
 }: TaskFormProps) => {
   const router = useRouter();
 
@@ -78,7 +80,6 @@ const TaskForm = ({
       );
 
       if (result.success) {
-
         clearForm();
 
         if (onTaskChanged) {
@@ -102,18 +103,24 @@ const TaskForm = ({
       formData.append("status", status);
       formData.append("priority", priority);
 
-      await saveTask(formData);
+      const result = await saveTask(formData);
 
-      clearForm();
-      if (onTaskChanged) {
-        await onTaskChanged();
+      if (result.success) {
+        clearForm();
+
+        if (onTaskChanged) {
+          await onTaskChanged();
+        }
+
+        if (result.taskId && onTaskAdded) {
+          onTaskAdded(result.taskId);
+        }
+      } else {
+        alert(`Failed to add task: ${result.error}`);
       }
-
     }
-
     setIsSubmitting(false);
   };
-
   const handleCancel = () => {
     clearForm();
 

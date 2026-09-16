@@ -21,15 +21,12 @@ const supabase = await createClient();
   const priorities = await getEnumValues("priority");
 
   return (
-    <div className="flex flex-row m-10">
-      <div id="TaskFormContainer" className="flex "></div>
-      <div id="taskDisplay" className="flex flex-col w-full">
-        <TaskArea
-          tasks={tasks}
-          statuses={statuses}
-          priorities={priorities}
-        ></TaskArea>
-      </div>
-    </div>
-  );
+  <div className="h-dvh m-5 overflow-hidden">
+    <TaskArea
+      tasks={tasks}
+      statuses={statuses}
+      priorities={priorities}
+    />
+  </div>
+);
 }
