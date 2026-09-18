@@ -202,13 +202,13 @@ const SideBar = ({
                 : "text-gray-400 hover:bg-gray-900 hover:text-red-400"
             } ${isCollapsed ? "justify-center px-2" : "gap-3 px-3"}`}
           >
-            <Image
-              src="/delete.png"
-              alt="add-task"
-              width="18"
-              height="18"
-              className={selectedCount === 0 ? "opacity-30" : "opacity-100"}
-            ></Image>
+            <span
+              className={`transition-opacity ${
+                selectedCount === 0 ? "opacity-30" : "opacity-100"
+              }`}
+            >
+              <Image src="/delete.png" alt="delete" width={18} height={18} />
+            </span>
 
             {!isCollapsed && <span>Delete</span>}
           </button>

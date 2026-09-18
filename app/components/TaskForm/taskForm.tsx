@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 
 import { saveTask } from "@/utils/services/saveTask";
 import { UpdateCard } from "@/utils/services/updateCard";
-import Image from "next/image";
 
 type Task = {
   id: number;
@@ -24,6 +23,7 @@ type TaskFormProps = {
   onCancelEdit?: () => void;
   onTaskChanged?: () => Promise<void>;
   onTaskAdded?: (taskId: number) => void;
+  onClose?: () => void;
 };
 
 const TaskForm = ({
@@ -33,6 +33,7 @@ const TaskForm = ({
   onCancelEdit,
   onTaskChanged,
   onTaskAdded,
+  onClose,
 }: TaskFormProps) => {
   const router = useRouter();
 
@@ -116,6 +117,10 @@ const TaskForm = ({
         if (result.taskId && onTaskAdded) {
           onTaskAdded(result.taskId);
         }
+
+        if (onClose) {
+          onClose();
+        }
       } else {
         alert(`Failed to add task: ${result.error}`);
       }
@@ -125,137 +130,155 @@ const TaskForm = ({
   const handleCancel = () => {
     clearForm();
 
-    if (onCancelEdit) {
-      onCancelEdit();
+    if (task) {
+      if (onCancelEdit) {
+        onCancelEdit();
+      }
+    } else {
+      if (onClose) {
+        onClose();
+      }
     }
   };
 
   return (
-    <div className="relative w-448 max-w-md rounded-xl border-gray-400 bg-gray-200 p-6">
-      <h2 className="mb-6 font-bold text-2xl">
+    <div className="relative w-full max-w-md h-full rounded-xl border-gray-400 bg-gray-200 p-6 sm:p-8">
+      <h2 className="mb-6 text-xl font-bold sm:text-2xl">
         {task ? "Edit Task" : "Add Task"}
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form
+        onSubmit={handleSubmit}
+        className="flex h-[calc(100%-3.5rem)] flex-col"
+      >
         {/* Title */}
-        <div>
-          <label htmlFor="title" className="mb-1 block text-sm font-medium">
-            Title
-          </label>
+        <div className="space-y-4">
+          <div>
+            <label htmlFor="title" className="mb-1 block text-sm font-medium">
+              Title
+            </label>
 
-          <input
-            id="title"
-            name="title"
-            type="text"
-            placeholder="e.g. Buy groceries"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-          />
+            <input
+              id="title"
+              name="title"
+              type="text"
+              placeholder="e.g. Buy groceries"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label
+              htmlFor="description"
+              className="mb-1 block text-sm font-medium"
+            >
+              Description
+            </label>
+
+            <textarea
+              id="description"
+              name="description"
+              placeholder="e.g. Get milk and potatoes"
+              rows={4}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 sm:min-h-27.5"
+            />
+          </div>
+
+          {/* Due Date */}
+          <div>
+            <label
+              htmlFor="due_date"
+              className="mb-1 block text-sm font-medium"
+            >
+              Due date
+            </label>
+
+            <input
+              id="due_date"
+              name="due_date"
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+            />
+          </div>
+
+          {/* Status */}
+          <div>
+            <label htmlFor="status" className="mb-1 block text-sm font-medium">
+              Status
+            </label>
+
+            <select
+              id="status"
+              name="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+            >
+              {statuses.map((status: string) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Priority */}
+          <div>
+            <label
+              htmlFor="priority"
+              className="mb-1 block text-sm font-medium"
+            >
+              Priority
+            </label>
+
+            <select
+              id="priority"
+              name="priority"
+              value={priority}
+              onChange={(e) => setPriority(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+            >
+              {priorities.map((priority: string) => (
+                <option key={priority} value={priority}>
+                  {priority.charAt(0).toUpperCase() + priority.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
+        <div className="flex flex-1 items-start pt-8">
+          <div className="flex w-full gap-3">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-1 rounded-lg bg-black px-4 py-2 font-medium text-white hover:bg-gray-800 disabled:opacity-50"
+            >
+              {isSubmitting
+                ? task
+                  ? "Updating..."
+                  : "Adding..."
+                : task
+                  ? "Update Task"
+                  : "Add Task"}
+            </button>
 
-        {/* Description */}
-        <div>
-          <label
-            htmlFor="description"
-            className="mb-1 block text-sm font-medium"
-          >
-            Description
-          </label>
-
-          <textarea
-            id="description"
-            name="description"
-            placeholder="e.g. Get milk and potatoes"
-            rows={4}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-          />
+            <button
+              type="button"
+              onClick={handleCancel}
+              disabled={isSubmitting}
+              className="flex-1 rounded-lg border border-gray-400 px-4 py-2 font-medium hover:bg-gray-100 disabled:opacity-50"
+            >
+              {task ? "Cancel Edit" : "Cancel"}
+            </button>
+          </div>
         </div>
-
-        {/* Due Date */}
-        <div>
-          <label htmlFor="due_date" className="mb-1 block text-sm font-medium">
-            Due date
-          </label>
-
-          <input
-            id="due_date"
-            name="due_date"
-            type="date"
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-          />
-        </div>
-
-        {/* Status */}
-        <div>
-          <label htmlFor="status" className="mb-1 block text-sm font-medium">
-            Status
-          </label>
-
-          <select
-            id="status"
-            name="status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-          >
-            {statuses.map((status: string) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Priority */}
-        <div>
-          <label htmlFor="priority" className="mb-1 block text-sm font-medium">
-            Priority
-          </label>
-
-          <select
-            id="priority"
-            name="priority"
-            value={priority}
-            onChange={(e) => setPriority(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-          >
-            {priorities.map((priority: string) => (
-              <option key={priority} value={priority}>
-                {priority.charAt(0).toUpperCase() + priority.slice(1)}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-lg bg-black px-4 py-2 font-medium text-white hover:bg-gray-800 disabled:opacity-50"
-        >
-          {isSubmitting
-            ? task
-              ? "Updating..."
-              : "Adding..."
-            : task
-              ? "Update Task"
-              : "Add Task"}
-        </button>
-
-        {task && (
-          <button
-            type="button"
-            onClick={handleCancel}
-            disabled={isSubmitting}
-            className="w-full rounded-lg border border-gray-400 px-4 py-2 font-medium hover:bg-gray-100"
-          >
-            Cancel Edit
-          </button>
-        )}
       </form>
     </div>
   );

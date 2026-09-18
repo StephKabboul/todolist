@@ -164,16 +164,19 @@ const TaskArea = ({ tasks, statuses, priorities }: TaskAreaProps) => {
         gridColumns={gridColumns}
         setGridColumns={setGridColumns}
       />
-      <div className="flex h-full min-w-0 flex-1 flex-row p-5">
+      <div className={`flex h-full min-w-0 flex-1 flex-row lg:flex-row p-5 ${
+    isAddTaskCollapsed ? "gap-0" : "gap-6"
+  }`}>
         <div
           id="addTaskContainer"
-          className={`sticky top-0 shrink-0 overflow-hidden transition-all duration-600 ${
-            isAddTaskCollapsed ? "w-0 opacity-0" : "w-md opacity-100"
+          className={`h-full shrink-0 overflow-hidden transition-all duration-600 ${
+            isAddTaskCollapsed ? "w-0 opacity-0" : "w-full opacity-100 lg:w-md"
           }`}
         >
           <TaskForm
             statuses={statuses}
             priorities={priorities}
+            onClose={() => setIsAddTaskCollapsed(true)}
             onTaskChanged={loadFilteredTasks}
             onTaskAdded={(taskId) => {
               setHighlightedTaskId(taskId);
@@ -187,7 +190,7 @@ const TaskArea = ({ tasks, statuses, priorities }: TaskAreaProps) => {
         </div>
         <div
           id="taskDisplay"
-          className="ml-10 flex min-h-0 min-w-0 flex-1 flex-col"
+          className=" flex min-h-0 min-w-0 flex-1 flex-col"
         >
           <div className="sticky  mb-3 flex shrink-0 items-start gap-3">
             <div className="min-w-0 flex-1">
