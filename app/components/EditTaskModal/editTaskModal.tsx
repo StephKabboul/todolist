@@ -76,8 +76,14 @@ const EditTaskModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-xl bg-gray-200 p-6">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-md rounded-xl bg-gray-200 p-6"
+      >
         <h2 className="mb-6 text-2xl font-bold">Edit Task</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">

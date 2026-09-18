@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { saveTask } from "@/utils/services/saveTask";
 import { UpdateCard } from "@/utils/services/updateCard";
+import Image from "next/image";
 
 type Task = {
   id: number;
@@ -38,8 +39,8 @@ const TaskForm = ({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [status, setStatus] = useState("");
-  const [priority, setPriority] = useState("");
+  const [status, setStatus] = useState("Not Started");
+  const [priority, setPriority] = useState("Not Urgent");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Load the selected task into the form when editing
@@ -59,8 +60,8 @@ const TaskForm = ({
     setTitle("");
     setDescription("");
     setDueDate("");
-    setStatus("");
-    setPriority("");
+    setStatus("Not Started");
+    setPriority("Not Urgent");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -130,7 +131,7 @@ const TaskForm = ({
   };
 
   return (
-    <div className=" w-448 max-w-md rounded-xl border-gray-400 bg-gray-200 p-6">
+    <div className="relative w-448 max-w-md rounded-xl border-gray-400 bg-gray-200 p-6">
       <h2 className="mb-6 font-bold text-2xl">
         {task ? "Edit Task" : "Add Task"}
       </h2>
@@ -146,7 +147,7 @@ const TaskForm = ({
             id="title"
             name="title"
             type="text"
-            placeholder="Task title"
+            placeholder="e.g. Buy groceries"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
@@ -165,7 +166,7 @@ const TaskForm = ({
           <textarea
             id="description"
             name="description"
-            placeholder="Describe your task..."
+            placeholder="e.g. Get milk and potatoes"
             rows={4}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -202,8 +203,6 @@ const TaskForm = ({
             onChange={(e) => setStatus(e.target.value)}
             className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
           >
-            <option value="">Select status</option>
-
             {statuses.map((status: string) => (
               <option key={status} value={status}>
                 {status}
@@ -225,8 +224,6 @@ const TaskForm = ({
             onChange={(e) => setPriority(e.target.value)}
             className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
           >
-            <option value="">Select a priority</option>
-
             {priorities.map((priority: string) => (
               <option key={priority} value={priority}>
                 {priority.charAt(0).toUpperCase() + priority.slice(1)}

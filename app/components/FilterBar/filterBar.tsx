@@ -44,28 +44,15 @@ const FilterBar = ({
       direction: "desc",
     });
   };
+  //className="mb-5 flex items-center gap-3 rounded-xl bg-gray-200 p-4"
   return (
-    <div className="mb-6 flex items-center gap-3 rounded-xl bg-gray-200 p-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 rounded-xl bg-gray-200 p-4 gap-2">
-        {/* Search */}
-        <input
-          type="text"
-          placeholder="Search tasks..."
-          value={filters.search}
-          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-          onChange={(e) =>
-            setFilters({
-              ...filters,
-              search: e.target.value,
-            })
-          }
-        />
-
+    <div className="flex items-center gap-3 rounded-xl mb-6 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1fr_auto] rounded-xl gap-2">
         {/* Status */}
         <select
           name="status"
           value={filters.status}
-          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+          className="rounded-lg border border-gray-300 bg-gray-200 px-3 py-2 outline-none focus:border-blue-500"
           onChange={(e) =>
             setFilters({
               ...filters,
@@ -86,7 +73,7 @@ const FilterBar = ({
         <select
           name="priority"
           value={filters.priority}
-          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+          className="rounded-lg border border-gray-300 bg-gray-200 px-3 py-2 outline-none focus:border-blue-500"
           onChange={(e) =>
             setFilters({
               ...filters,
@@ -108,7 +95,7 @@ const FilterBar = ({
           type="date"
           name="due_date"
           value={filters.due_date}
-          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+          className="rounded-lg border border-gray-300 bg-gray-200 px-3 py-2 outline-none focus:border-blue-500"
           onChange={(e) =>
             setFilters({
               ...filters,
@@ -120,7 +107,7 @@ const FilterBar = ({
         {/* Sort */}
         <select
           value={`${sort.field}-${sort.direction}`}
-          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+          className="rounded-lg border border-gray-300 bg-gray-200 px-3 py-2 outline-none focus:border-blue-500"
           onChange={(e) => {
             console.log("DROPDOWN CHANGED:", e.target.value);
 
@@ -150,15 +137,16 @@ const FilterBar = ({
           <option value="priority-desc">
             Very Urgent → Urgent → Not Urgent
           </option>
-        </select>
-      </div>
-      <button
+        </select><button
         type="button"
         onClick={handleReset}
-        className="cursor-pointer px-3 py-2"
+        className="shrink-0 rounded-lg border border-gray-300 bg-gray-200 px-3 py-2 text-sm text-gray-700 transition hover:bg-gray-300 focus:border-blue-500"
       >
-        <Image src="/undo.png" alt="reset" width={40} height={40}></Image>
+        Clear
       </button>
+      </div>
+      
+      
     </div>
   );
 };
